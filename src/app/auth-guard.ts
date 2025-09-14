@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { AuthService } from './services/auth';
 
 @Injectable({
@@ -9,12 +9,17 @@ export class AuthGuard implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(): boolean {
-    if (this.authService.isAuthenticated()) {
-      return true; // giriş yapılmış, dashboard'a izin ver
-    } else {
-      this.router.navigate(['/login']); // login'e yönlendir
-      return false;
-    }
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+  const requiredRole = route.data['role'] as string;
+  if (!this.authService.isAuthenticated()) {
+    this.router.navigate(['/login']);
+    return false;
   }
+  if (requiredRole && this.authService.getRole() !== requiredRole) {
+    alert('Bu sayfaya erişim yetkiniz yok!');
+    this.router.navigate(['/dashboard']);
+    return false;
+  }
+  return true;
+}
 }

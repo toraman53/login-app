@@ -15,14 +15,13 @@ import { Production } from './pages/production/production';
 export const routes: Routes = [
   { path: '', component: HomeComponent },        // anasayfa
   { path: 'login', component: LoginComponent },  // login sayfası
-  { path: 'dashboard', component: DashboardComponent,canActivate:[AuthGuard] }, // dashboard
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'sales', component: Sales, canActivate: [AuthGuard] },
-  { path: 'warehouse', component: Warehouse, canActivate: [AuthGuard] },
-  { path: 'reports', component: Reports, canActivate: [AuthGuard] },
-  { path: 'staff', component: Staff, canActivate: [AuthGuard] },
-  { path: 'credit', component: Credit, canActivate: [AuthGuard] },
-  { path: 'production', component: Production, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent,canActivate:[AuthGuard]}, // dashboard
+  { path: 'sales', component: Sales, canActivate: [AuthGuard],data:{role:'tezgah'} },
+  { path: 'warehouse', component: Warehouse, canActivate: [AuthGuard],data:{role:'tezgah'} },
+  { path: 'reports', component: Reports, canActivate: [AuthGuard],data:{role:'muhasebe'} },
+  { path: 'staff', component: Staff, canActivate: [AuthGuard],data:{role:'admin'} },
+  { path: 'credit', component: Credit, canActivate: [AuthGuard],data:{role:'muhasebe'} },
+  { path: 'production', component: Production, canActivate: [AuthGuard],data:{role:'admin'} },
 ];
 
 @NgModule({
