@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth';
 
 
 
@@ -14,12 +15,10 @@ export class LoginComponent {
   username = '';
   password = '';
 
-  constructor(private router: Router) {}
+ constructor(private router: Router, private authService: AuthService) {}
 
   login() {
-    // çok basit kontrol (ileride service ile yapılacak)
-    if (this.username === 'admin' && this.password === '1234') {
-      // başarılı giriş => dashboard’a yönlendir
+    if (this.authService.login(this.username, this.password)) {
       this.router.navigate(['/dashboard']);
     } else {
       alert('Kullanıcı adı veya şifre hatalı!');
