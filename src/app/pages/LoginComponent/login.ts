@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, InputOptions } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
+import { IAuthService } from '../../services/auth.service';
+import { DummyAuthService } from '../../services/dummyjsonAuthService';
 
 
 
@@ -15,13 +17,21 @@ export class LoginComponent {
   username = '';
   password = '';
 
- constructor(private router: Router, private authService: AuthService) {}
+  private authService: IAuthService = inject(DummyAuthService)
 
-  login() {
-    if (this.authService.login(this.username, this.password)) {
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert('Kullanıcı adı veya şifre hatalı!');
-    }
+ constructor(private router: Router) {}
+
+  login() { 
+    this.authService.login(this.username, this.password).subscribe({
+        next: (response) => {
+            console.log('Login successful', response);
+            this.router.navigateByUrl('/dashboard');
+            // Başarılı giriş sonrası yapılacak işlemler
+        },
+        error: (error) => {
+            console.error('Login failed', error);
+            // Hata durumunda yapılacak işlemler
+        }
+    });
   }
 }

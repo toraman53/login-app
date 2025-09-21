@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { IAuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService  {
   private readonly storageKey = 'isLoggedIn';
   private readonly userKey = 'username';
   private readonly roleKey = 'role';
@@ -34,13 +35,13 @@ export class AuthService {
       this.username = username;
       this.role = 'muhasebe';
     } else {
-      return false;
+      this.isLoggedIn = false;
     }
 
     localStorage.setItem(this.storageKey, 'true');
     localStorage.setItem(this.userKey, this.username);
     localStorage.setItem(this.roleKey, this.role);
-    return true;
+    return this.isLoggedIn;
   }
 
   logout(): void {
